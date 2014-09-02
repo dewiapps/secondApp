@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "_default": {
+            "link": "secondApp"
+        }, 
+        "secondApp": {
+            "applicationId": "N61kazwd61aYwoKTnrmDMxQL0erZ9rMqCk68suXA", 
+            "masterKey": "mt9YwsX0DdB8W9rzl6wf2yXaS9Kxf3XrsRFDkxnN"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.2.19"
+    }
+}
