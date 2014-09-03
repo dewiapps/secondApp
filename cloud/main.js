@@ -4,3 +4,5 @@ require('cloud/app.js');
 Parse.Cloud.define("hello", function(request, response) {
   response.success("Hello world!");
 });
+
+console.log('This console.log is running in the cloud and was created by Nates PC');
