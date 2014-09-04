@@ -30,5 +30,20 @@ Parse.Cloud.define("savePart", function(request, response){
   });
 });
 
+Parse.Cloud.define("findParts", function(request, response){
+  var query = new Parse.Query("Parts");
+  query.ascending("name");
+  return query.find().then(function(results){
+    var parts = results.map(function(part){
+      return part.get("name");
+    });
+    console.log("Find parts = " + parts);
+    return response.success(parts);
+  },function(error){
+      response.error(error);
+  });
+});
+
+
 
 console.log('This console.log is running in the cloud and was created by Nates Mac');

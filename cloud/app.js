@@ -1,5 +1,6 @@
 
 var express = require('express');
+var _ = require('underscore');
 var parseExpressHttpsRedirect = require('parse-express-https-redirect');
 var parseExpressCookieSession = require('parse-express-cookie-session');
 var app = express();
@@ -10,6 +11,7 @@ app.use(parseExpressHttpsRedirect());  // Require user to be on HTTPS.
 app.use(express.bodyParser());
 app.use(express.cookieParser('YOUR_SIGNING_SECRET'));
 app.use(parseExpressCookieSession({ cookie: { maxAge: 3600000 } }));
+
 
 // This is an example of hooking up a request handler with a specific request
 // path and HTTP verb using the Express routing API.
@@ -53,11 +55,11 @@ app.post('/signup', function(req, res) {
 // Clicking submit on the login form triggers this.
 app.post('/addpart', function(req, res) {
     Parse.Cloud.run('savePart', {name: req.body.part}).then(function(results){
-        console.log(req.body.part + 'saved');
+        res.redirect('/');
       },function(error){
           console.log(error.message);
     });
-    res.redirect('/');
+    
 });
 
 // You could have a "Log Out" link on your website pointing to this.
@@ -67,13 +69,46 @@ app.get('/logout', function(req, res) {
 });
 
 // The homepage renders differently depending on whether user is logged in.
-app.get('/', function(req, res) {
+//app.get('/', function(req, res) {
+////    var parts = Parse.Cloud.run('findParts');
+//    
+//    if (Parse.User.current()) {
+//    Parse.User.current().fetch().then(function(user) {
+//        
+//        var parts = Parse.Cloud.run("findParts");
+//        
+//        
+//      
+//        res.render('admin', { message: 'This hello page was created by Nates PC!  Using Git and Parse!',
+//                              currUser: user.attributes.username,
+//                              parts: parts
+//                            });
+//      },
+//      function(error) {
+//        res.render('home', { message: 'There has been an error fetching your user data!' });
+//      }); 
+//  } else {
+//    res.render('home', { message: 'This hello page was created by Nates PC!  Using Git and Parse!' });
+//  }
+//});
+
+
+app.get('/', function(req, res){
   if (Parse.User.current()) {
-    res.render('admin', { message: 'This hello page was created by Nates PC!  Using Git and Parse!' });
+     Parse.Cloud.run("findParts").then(function(results){
+        console.log(results);
+        res.render('admin', { message: 'You are logged in... now you can do things!',
+                           currUser: 'fubar',
+                           parts: results
+                         });   
+     },function(error){
+        res.render('home', { message: 'Error retrieving parts list!' });
+     });
   } else {
-    res.render('home', { message: 'This hello page was created by Nates PC!  Using Git and Parse!' });
+    res.render('home', { message: 'Please login if you want to see the good stuff...' });
   }
 });
+
 
 // You could have a "Profile" link on your website pointing to this.
 app.get('/profile', function(req, res) {
