@@ -1,0 +1,11 @@
+body{
+ background-color: yellow;
+}
+
+#addPartsContainer{
+  margin-bottom: 1em;
+}
+
+.btn{
+  margin: .1em;
+}

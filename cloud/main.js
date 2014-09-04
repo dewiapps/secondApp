@@ -9,4 +9,26 @@ Parse.Cloud.define("hello", function(request, response) {
   response.success("Hello world!");
 });
 
-console.log('This console.log is running in the cloud and was created by Nates PC');
+Parse.Cloud.define("savePart", function(request, response){
+  var query = new Parse.Query("Parts");
+  query.equalTo("name", request.params.name);
+  query.count().then(function(partCount){
+     
+    if(partCount > 0){
+      response.error("we already have that part!  please choose another");
+      return;
+    }
+     
+    var part = new Parse.Object("Parts");
+    part.set("name", request.params.name);
+    part.save().then(function() {
+      response.success();
+    }, function(error) {
+      response.error(error);
+    });
+     
+  });
+});
+
+
+console.log('This console.log is running in the cloud and was created by Nates Mac');

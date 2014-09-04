@@ -17,9 +17,6 @@ app.get('/hello', function(req, res) {
   res.render('hello', { message: 'This hello page was created by Nates PC!  Using Git and Parse!' });
 });
 
-app.get('/', function(req, res) {
-  res.render('home', { message: 'This home page was created by Nates PC!  Using Git and Parse!' });
-});
 
 // You could have a "Log In" link on your website pointing to this.
 app.get('/login', function(req, res) {
@@ -40,6 +37,29 @@ app.post('/login', function(req, res) {
   });
 });
 
+// Clicking submit on the login form triggers this.
+app.post('/signup', function(req, res) {
+  Parse.User.signUp(req.body.username, req.body.password, { ACL: new Parse.ACL()}).then(function() {
+    // Login succeeded, redirect to homepage.
+    // parseExpressCookieSession will automatically set cookie.
+    res.redirect('/');
+  },
+  function(error) {
+    // Login failed, redirect back to login form.
+    res.render('login', {flash: error.message});
+  });
+});
+
+// Clicking submit on the login form triggers this.
+app.post('/addpart', function(req, res) {
+    Parse.Cloud.run('savePart', {name: req.body.part}).then(function(results){
+        console.log(req.body.part + 'saved');
+      },function(error){
+          console.log(error.message);
+    });
+    res.redirect('/');
+});
+
 // You could have a "Log Out" link on your website pointing to this.
 app.get('/logout', function(req, res) {
   Parse.User.logOut();
@@ -49,17 +69,9 @@ app.get('/logout', function(req, res) {
 // The homepage renders differently depending on whether user is logged in.
 app.get('/', function(req, res) {
   if (Parse.User.current()) {
-    // No need to fetch the current user for querying Note objects.
-    var Note = Parse.Object.extend("Note");
-    var query = new Parse.Query(Note);
-    query.find().then(function(results) {
-      // Render the notes that the current user is allowed to see.
-    },
-    function(error) {
-      // Render error page.
-    });
+    res.render('admin', { message: 'This hello page was created by Nates PC!  Using Git and Parse!' });
   } else {
-    // Render a public welcome page, with a link to the '/login' endpoint.
+    res.render('home', { message: 'This hello page was created by Nates PC!  Using Git and Parse!' });
   }
 });
 
@@ -79,19 +91,6 @@ app.get('/profile', function(req, res) {
     res.redirect('/login');
   }
 });
-
-app.post('/partsInput', function(req, res) {
-    var newPart = new Parse.Object("Parts");
-    newPart.set("name", req.body.part);
-    newPart.save().then(function(){
-      response.success(req.body.part + ' saved as new part.');
-    });
-  },
-  function(error) {
-    response.error("Something went wrong.  Part not saved.");
-  });
-
-
 
 
 // // Example reading from the request query string of an HTTP get request.
