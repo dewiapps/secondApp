@@ -19,7 +19,7 @@
         var likes = part.get("likes");
         var dislikes = part.get("dislikes");
         var totalLikes = likes + dislikes;
-        var approvalPercentage = (likes / totalLikes) * 100;
+        var approvalPercentage = Math.round((likes / totalLikes) * 100);
         if (isNaN(approvalPercentage)){
           approvalPercentage = 0;
         } 

@@ -25,7 +25,8 @@
         var objID = part.id;
         var likes = part.get("likes");
         var dislikes = part.get("dislikes");
-        var approvalPercentage = (likes / (likes + dislikes)*100);
+        var totalLikes = likes + dislikes;
+        var approvalPercentage = Math.round((likes / totalLikes) *100);
         if (isNaN(approvalPercentage)){
           approvalPercentage = 0;
         } 
