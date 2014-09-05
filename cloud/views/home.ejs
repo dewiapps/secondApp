@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <% include partials/head %>
+  <% include partials/nav %>
   <body>
     <div class="container">
       <% if (Parse.User.current()) { %>
@@ -11,7 +12,6 @@
       <% } %>
       <h1>secondApp - home</h1>
       <p><%= message %></p>
-      <a href="/hello" class="btn btn-danger btn-lg">Go to hello page</a>
     </div><!-- end container -->
      
        

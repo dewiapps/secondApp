@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
   <% include partials/head %>
+  <% include partials/nav %>
   <body>
     <div class="container">
         <a href="/logout" class="pull-right btn btn-sm btn-danger">Logout</a>
         <span class="pull-right">Welcome, <%= currUser %></span>
       <h1>secondApp - admin</h1>
       <p><%= message %></p>
-      <a href="/hello" class="btn btn-danger btn-lg">Go to hello page</a>
     </div><!-- end container -->
      
       <div class="container">
