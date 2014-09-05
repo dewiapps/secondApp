@@ -2,27 +2,41 @@
 <html>
   <% include partials/head %>
   <% include partials/nav %>
-  <body>
+  <body class="homeUser">
     <div class="container">
       <% if (Parse.User.current()) { %>
-        <div class="pull-right">Welcome <%= currUser %></div>
         <a href="/logout" class="pull-right btn btn-sm btn-danger">Logout</a>
+        <div class="pull-right" id="welcome-message">Welcome <%= currUser %></div>
       <% } else { %>
         <a href="/login" class="pull-right btn btn-sm btn-success">Login/Signup</a>
       <% } %>
-      <h1>secondApp - User</h1>
       <p><%= message %></p>
       
   <div id="content">
     <% parts.forEach(function(part){ 
         var currPart = part.get("name"); 
         var objID = part.id;
+        var likes = part.get("likes");
+        var dislikes = part.get("dislikes");
+        var totalLikes = likes + dislikes;
+        var approvalPercentage = (likes / totalLikes) * 100;
+        if (isNaN(approvalPercentage)){
+          approvalPercentage = 0;
+        } 
     %>
-    <form action="/voteup/<%= objID %>" method="post">
-      <label><%= currPart %></label>
-      <input type="submit" value="voteup">
-    </form>
-         <br>
+      <span><%= currPart %></span>
+        <form action="/voteup/<%= objID %>" method="post">
+          <input class="btn btn-xs btn-success" type="submit" value="vote up">
+        </form>
+        <form action="/votedown/<%= objID %>" method="post">
+          <input class="btn btn-xs btn-danger" type="submit" value="vote down">
+        </form>
+      <% if (totalLikes < 5){ %>
+      <span>Need <%= 5 - totalLikes %> more votes to calculate approval</span>
+      <% } else { %>
+      <span><%= approvalPercentage %>% approval</span>
+      <% } %>
+    <br>
     <% }) %><!-- end forEach loop -->
     
     </div>  

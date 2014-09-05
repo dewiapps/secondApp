@@ -2,18 +2,17 @@
 <html>
   <% include partials/head %>
   <% include partials/nav %>
-  <body>
+  <body class="homeAdmin">
     <div class="container">
         <a href="/logout" class="pull-right btn btn-sm btn-danger">Logout</a>
-        <span class="pull-right">Welcome, <%= currUser %></span>
-      <h1>secondApp - admin</h1>
+        <span class="pull-right" id="welcome-message">Welcome, <%= currUser %></span>
       <p><%= message %></p>
     </div><!-- end container -->
      
       <div class="container">
   <div id="addPartsContainer">
-    <h3 style="">Add Parts</h3>
-    <form method="post" action="/addpart">
+    <h3 class="text-center">Add Parts</h3>
+    <form class="text-center" method="post" action="/addpart">
       <label>Add Part</label>
       <input name="part" id="partInput"></input>
       <input class="button" type="submit" value="Add">
@@ -24,11 +23,18 @@
     <% parts.forEach(function(part){ 
         var currPart = part.get("name"); 
         var objID = part.id;
+        var likes = part.get("likes");
+        var dislikes = part.get("dislikes");
+        var approvalPercentage = (likes / (likes + dislikes)*100);
+        if (isNaN(approvalPercentage)){
+          approvalPercentage = 0;
+        } 
     %>
     <form action="/deletepart/<%= objID %>" method="post">
       <label><%= currPart %></label>
+      <label><small style="color:#ff7474"><%= approvalPercentage %>% approval</small></label>
       <input type='hidden' name='_method' value='delete'>
-      <input class="btn btn-sm btn-danger" type="submit" value="Delete">
+      <input class="btn btn-xs btn-danger pull-right" type="submit" value="Delete">
     </form>
     <% }) %><!-- end forEach loop -->
     

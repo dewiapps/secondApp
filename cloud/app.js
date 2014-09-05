@@ -1,7 +1,6 @@
 
 var express = require('express');
 var _ = require('underscore');
-var method
 var parseExpressHttpsRedirect = require('parse-express-https-redirect');
 var parseExpressCookieSession = require('parse-express-cookie-session');
 var app = express();
@@ -54,15 +53,6 @@ app.post('/signup', function(req, res) {
   });
 });
 
-// Clicking submit on the login form triggers this.
-app.post('/addpart', function(req, res) {
-    Parse.Cloud.run('savePart', {name: req.body.part}).then(function(results){
-        res.redirect('/');
-      },function(error){
-        res.redirect('/', {message: 'We already have that part!  Try another.'});
-    });
-    
-});
 
 app.delete('/deletepart/:id', function(req, res){
    var partToDestroy = new Parse.Object("Parts");
@@ -81,46 +71,36 @@ app.get('/logout', function(req, res) {
   res.redirect('/');
 });
 
-// The homepage renders differently depending on whether user is logged in.
-//app.get('/', function(req, res) {
-////    var parts = Parse.Cloud.run('findParts');
-//    
-//    if (Parse.User.current()) {
-//    Parse.User.current().fetch().then(function(user) {
-//        
-//        var parts = Parse.Cloud.run("findParts");
-//        
-//        
-//      
-//        res.render('admin', { message: 'This hello page was created by Nates PC!  Using Git and Parse!',
-//                              currUser: user.attributes.username,
-//                              parts: parts
-//                            });
-//      },
-//      function(error) {
-//        res.render('home', { message: 'There has been an error fetching your user data!' });
-//      }); 
-//  } else {
-//    res.render('home', { message: 'This hello page was created by Nates PC!  Using Git and Parse!' });
-//  }
-//});
+// Clicking submit on the login form triggers this.
+app.post('/addpart', function(req, res) {
+    Parse.Cloud.run('savePart', {name: req.body.part}).then(function(results){
+        res.redirect('/');
+      },function(error){
+        res.redirect('/', {message: 'We already have that part!  Try another.'});
+    });
+    
+});
 
+// Clicking submit on the login form triggers this.
+app.post('/voteup/:id', function(req, res) {
+    Parse.Cloud.run('voteUp', {id: req.params.id}).then(function(results){
+        res.redirect('/');
+      },function(error){
+        res.redirect('/', {message: 'Error voting up this part'});
+    });
+    
+});
 
-//app.get('/', function(req, res){
-//  if (Parse.User.current()) {
-//     Parse.Cloud.run("findParts").then(function(results){
-//        res.render('homeAdmin', { message: 'You are logged in as admin and have special permissions!',
-//                              currUser: 'fubar',
-//                              parts: results
-//                            });   
-//     },function(error){
-//        res.render('homeGuest', { message: 'Error retrieving parts list!' });
-//     });
-//  } else {
-//      res.render('homeGuest', { message: 'Welcome.  Please log in to see your parts list!' });
-//
-//  }
-//});
+// Clicking submit on the login form triggers this.
+app.post('/votedown/:id', function(req, res) {
+    Parse.Cloud.run('voteDown', {id: req.params.id}).then(function(results){
+        res.redirect('/');
+      },function(error){
+        res.redirect('/', {message: 'Error voting down this part'});
+    });
+    
+});
+
 
 app.get('/', function(req, res){
   if (Parse.User.current()) {

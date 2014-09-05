@@ -5,7 +5,7 @@
   <body>
     <div class="container">
       <% if (Parse.User.current()) { %>
-        <div class="pull-right">Welcome <%= currUser %></div>
+        <div class="pull-right" id="welcome-message">Welcome <%= currUser %></div>
         <a href="/logout" class="pull-right btn btn-sm btn-danger">Logout</a>
       <% } else { %>
         <a href="/login" class="pull-right btn btn-sm btn-success">Login/Signup</a>

@@ -21,6 +21,38 @@ Parse.Cloud.define("savePart", function(request, response){
      
     var part = new Parse.Object("Parts");
     part.set("name", request.params.name);
+    part.set("likes", 0);
+    part.set("dislikes", 0);
+    part.save().then(function() {
+      response.success();
+    }, function(error) {
+      response.error(error);
+    });
+     
+  });
+});
+
+Parse.Cloud.define("voteUp", function(request, response){
+  var query = new Parse.Query("Parts");
+  query.equalTo("objectId", request.params.id);
+  query.first().then(function(part){
+    console.log("you clicked: " + part);
+    part.increment("likes");
+    part.save().then(function() {
+      response.success();
+    }, function(error) {
+      response.error(error);
+    });
+     
+  });
+});
+
+Parse.Cloud.define("voteDown", function(request, response){
+  var query = new Parse.Query("Parts");
+  query.equalTo("objectId", request.params.id);
+  query.first().then(function(part){
+    console.log("you clicked: " + part);
+    part.increment("dislikes");
     part.save().then(function() {
       response.success();
     }, function(error) {
