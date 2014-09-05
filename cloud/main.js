@@ -34,11 +34,7 @@ Parse.Cloud.define("findParts", function(request, response){
   var query = new Parse.Query("Parts");
   query.ascending("name");
   return query.find().then(function(results){
-    var parts = results.map(function(part){
-      return part.get("name");
-    });
-    console.log("Find parts = " + parts);
-    return response.success(parts);
+    return response.success(results);
   },function(error){
       response.error(error);
   });

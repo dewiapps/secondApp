@@ -21,13 +21,20 @@
   </div>
   
   <div id="content">
-    <% parts.forEach(function(part){ %>
-        <%= part %> <br>
-    <% }) %>
+    <% parts.forEach(function(part){ 
+        var currPart = part.get("name"); 
+        var objID = part.id;
+    %>
+    <form action="/deletepart/<%= objID %>" method="post">
+      <label><%= currPart %></label>
+      <input type='hidden' name='_method' value='delete'>
+      <input class="btn btn-sm btn-danger" type="submit" value="Delete">
+    </form>
+    <% }) %><!-- end forEach loop -->
     
     </div>
     <div id="test"></div>
-  </div>
+  </div><!-- end container -->
        
     <% include partials/footer %>
   <script>

@@ -5,13 +5,30 @@
   <body>
     <div class="container">
       <% if (Parse.User.current()) { %>
-        <div class="pull-right">Welcome <%= user %></div>
+        <div class="pull-right">Welcome <%= currUser %></div>
         <a href="/logout" class="pull-right btn btn-sm btn-danger">Logout</a>
       <% } else { %>
         <a href="/login" class="pull-right btn btn-sm btn-success">Login/Signup</a>
       <% } %>
-      <h1>secondApp - home</h1>
+      <h1>secondApp - User</h1>
       <p><%= message %></p>
+      
+  <div id="content">
+    <% parts.forEach(function(part){ 
+        var currPart = part.get("name"); 
+        var objID = part.id;
+    %>
+    <form action="/voteup/<%= objID %>" method="post">
+      <label><%= currPart %></label>
+      <input type="submit" value="voteup">
+    </form>
+         <br>
+    <% }) %><!-- end forEach loop -->
+    
+    </div>  
+      
+      
+      
     </div><!-- end container -->
      
        

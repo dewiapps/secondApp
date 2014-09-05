@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <% include partials/head %>
+  <% include partials/nav %>
+  <body>
+    <div class="container">
+      <% if (Parse.User.current()) { %>
+        <div class="pull-right">Welcome <%= currUser %></div>
+        <a href="/logout" class="pull-right btn btn-sm btn-danger">Logout</a>
+      <% } else { %>
+        <a href="/login" class="pull-right btn btn-sm btn-success">Login/Signup</a>
+      <% } %>
+      <h1>secondApp - home</h1>
+      <p><%= message %></p>
+          
+    </div><!-- end container -->
+     
+       
+    <% include partials/footer %>
+  </body>
+</html>
